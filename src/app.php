@@ -1,8 +1,33 @@
 <?php
+/**
+ * config
+ */
+$appConfig = require_once "../config/app.php";
+/**
+ * function exceptions
+ */
 require_once "exceptions.php";
-require_once "requests.php";
-require_once "routes.php";
+/**
+ * hanlde request
+ */
+require_once "request.php";
+/**
+ * hanlde route
+ */
+require_once "route.php";
+/**
+ * function helpers 
+ */
 require_once "helpers.php";
-
+/**
+ * public routes
+ */
 require_once "../routes/routes.php";
+
+if(!$GLOBALS['checkedUrlInRoutes']) {
+    echo responseJson([
+        'status' => 404,
+        'msg' => '404 not found'
+    ], 404);
+}
 

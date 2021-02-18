@@ -2,32 +2,32 @@
 
 function group(array $arrParams, closure $callback)
 {
-    return coreRoutesGroup($arrParams, $callback);
+    return coreRouteGroup($arrParams, $callback);
 }
 
 function get(string $url, string $controller)
 {
-    return coreRoutesGet($url, $controller);
+    return coreRouteGet($url, $controller);
 }
 
 //function post($url, $controller)
 //{
-//    return coreRoutesPost($url, $controller);
+//    return coreRoutePost($url, $controller);
 //}
 //
 //function put($url, $controller)
 //{
-//    return coreRoutesPut($url, $controller);
+//    return coreRoutePut($url, $controller);
 //}
 //
 //function patch($url, $controller)
 //{
-//    return coreRoutesPatch($url, $controller);
+//    return coreRoutePatch($url, $controller);
 //}
 //
 //function delete($url, $controller)
 //{
-//    return coreRoutesDelete($url, $controller);
+//    return coreRouteDelete($url, $controller);
 //}
 
 function responseJson($response, $code)

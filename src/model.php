@@ -4,7 +4,15 @@ $qWhere = ' WHERE ';
 
 $connection = function ()
 {
-    $conn = mysqli_connect("localhost","root","","test");
+    $mysql = $GLOBALS['appConfig']['database']['mysql'];
+
+    $conn = mysqli_connect(
+        $mysql['host'],
+        $mysql['username'],
+        $mysql['password'],
+        $mysql['table']
+    );
+
 
     if(mysqli_connect_errno()) {
         error("Failed to connect to MySQL: " . mysqli_connect_error());
