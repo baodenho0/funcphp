@@ -1,10 +1,10 @@
 {
-    "name": "funcphp/funcphp",
+    "name": "hphp/framework",
     "description": "The funcphp framework.",
     "license": "MIT",
     "keywords": [
         "framework",
-        "funcphp",
+        "hphp",
         "functional programming php"
     ],
     "authors": [
