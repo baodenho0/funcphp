@@ -1,0 +1,19 @@
+{
+    "name": "hieu/funcphp",
+    "description": "The funcphp framework.",
+    "keywords": [
+        "framework",
+        "funcphp",
+        "functional programming php"
+    ],
+    "type": "project",
+    "authors": [
+        {
+            "name": "lequochieu",
+            "email": "lequochieu284@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2.5|^8.0"
+    }
+}
