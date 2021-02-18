@@ -1,6 +1,7 @@
 {
     "name": "hieu/funcphp",
     "description": "The funcphp framework.",
+    "license": "MIT",
     "keywords": [
         "framework",
         "funcphp",
