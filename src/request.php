@@ -35,9 +35,18 @@ function coreRequestQueryURL()
 {
     return substr(coreRequestFullUrl(), strlen(coreRequestAppURL()));
 }
-
+/**
+ * get all params in request
+ *
+ * @return mixed
+ */
 function coreRequestParams()
 {
     return $_REQUEST;
+}
+
+function coreRequestCheckMethod($method)
+{
+    return $method === $_SERVER['REQUEST_METHOD'];
 }
 

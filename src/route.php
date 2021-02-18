@@ -74,7 +74,59 @@ function coreRouteGetGroupStack()
  */
 function coreRouteGet($url, $controller)
 {
-    if(coreRouteCheckUrl($url)) {
+    if(coreRequestCheckMethod('GET') && coreRouteCheckUrl($url)) {
+        coreRouteDispatch($controller);
+    }
+}
+/**
+ * route post
+ *
+ * @param $url
+ * @param $controller "ExampleController@store"
+ * @return mixed
+ */
+function coreRoutePost($url, $controller)
+{
+    if(coreRequestCheckMethod('POST') && coreRouteCheckUrl($url)) {
+        coreRouteDispatch($controller);
+    }
+}
+/**
+ * route put
+ *
+ * @param $url
+ * @param $controller "ExampleController@update"
+ * @return mixed
+ */
+function coreRoutePut($url, $controller)
+{
+    if(coreRequestCheckMethod('PUT') && coreRouteCheckUrl($url)) {
+        coreRouteDispatch($controller);
+    }
+}
+/**
+ * route patch
+ *
+ * @param $url
+ * @param $controller "ExampleController@update"
+ * @return mixed
+ */
+function coreRoutePatch($url, $controller)
+{
+    if(coreRequestCheckMethod('PATCH') && coreRouteCheckUrl($url)) {
+        coreRouteDispatch($controller);
+    }
+}
+/**
+ * route delete
+ *
+ * @param $url
+ * @param $controller "ExampleController@delete"
+ * @return mixed
+ */
+function coreRouteDelete($url, $controller)
+{
+    if(coreRequestCheckMethod('DELETE') && coreRouteCheckUrl($url)) {
         coreRouteDispatch($controller);
     }
 }
@@ -85,12 +137,12 @@ function coreRouteArrUrlInRoute($url)
         $url = $prefix . '/' . $url;
     }
 
-    return explode('/', $url);
+    return array_values(array_filter(explode('/', $url)));
 }
 
 function coreRouteGetArrQueryUrl()
 {
-    return explode('/', coreRequestQueryURL());
+    return array_values(array_filter(explode('/', coreRequestQueryURL())));
 }
 
 function coreRouteCheckUrl($url)

@@ -24,10 +24,5 @@ require_once "helpers.php";
  */
 require_once "../routes/routes.php";
 
-if(!$GLOBALS['checkedUrlInRoutes']) {
-    echo responseJson([
-        'status' => 404,
-        'msg' => '404 not found'
-    ], 404);
-}
+
 
