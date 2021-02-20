@@ -3,6 +3,7 @@
  * array params {id}
  */
 $params = [];
+
 /**
  * namespace in route group
  */
@@ -70,9 +71,10 @@ function coreRouteGetGroupStack()
  *
  * @param $url
  * @param $controller "ExampleController@index"
+ * @param $more "[ 'middleware' => [] ]"
  * @return mixed
  */
-function coreRouteGet($url, $controller)
+function coreRouteGet(string $url, string $controller, array $more = [])
 {
     if(coreRequestCheckMethod('GET') && coreRouteCheckUrl($url)) {
         coreRouteDispatch($controller);
@@ -83,9 +85,10 @@ function coreRouteGet($url, $controller)
  *
  * @param $url
  * @param $controller "ExampleController@store"
+ * @param $more "[ 'middleware' => [] ]"
  * @return mixed
  */
-function coreRoutePost($url, $controller)
+function coreRoutePost(string $url, string $controller, array $more = [])
 {
     if(coreRequestCheckMethod('POST') && coreRouteCheckUrl($url)) {
         coreRouteDispatch($controller);
@@ -96,9 +99,10 @@ function coreRoutePost($url, $controller)
  *
  * @param $url
  * @param $controller "ExampleController@update"
+ * @param $more "[ 'middleware' => [] ]"
  * @return mixed
  */
-function coreRoutePut($url, $controller)
+function coreRoutePut(string $url, string $controller, array $more = [])
 {
     if(coreRequestCheckMethod('PUT') && coreRouteCheckUrl($url)) {
         coreRouteDispatch($controller);
@@ -109,9 +113,10 @@ function coreRoutePut($url, $controller)
  *
  * @param $url
  * @param $controller "ExampleController@update"
+ * @param $more "[ 'middleware' => [] ]"
  * @return mixed
  */
-function coreRoutePatch($url, $controller)
+function coreRoutePatch(string $url, string $controller, array $more = [])
 {
     if(coreRequestCheckMethod('PATCH') && coreRouteCheckUrl($url)) {
         coreRouteDispatch($controller);
@@ -122,9 +127,10 @@ function coreRoutePatch($url, $controller)
  *
  * @param $url
  * @param $controller "ExampleController@delete"
+ * @param $more "[ 'middleware' => [] ]"
  * @return mixed
  */
-function coreRouteDelete($url, $controller)
+function coreRouteDelete(string $url, string $controller, array $more = [])
 {
     if(coreRequestCheckMethod('DELETE') && coreRouteCheckUrl($url)) {
         coreRouteDispatch($controller);
@@ -173,7 +179,7 @@ function coreRouteCheckUrl($url)
         }
     }
 
-    coreRouteSetCheckedUrlInRoutes(implode('/', $urlInRoutes));
+    coreRouteSetCheckedUrlInRoutes(!$urlInRoutes ? '/' : implode('/', $urlInRoutes));
 
     return true;
 }
@@ -301,6 +307,15 @@ function coreRouteHandleGroupStack()
  */
 function coreRouteDispatch($controller)
 {
+    if(coreRouteGetMiddleware()) {
+        $middleware = require_once 'middleware.php';
+        
+        $handleMiddleware = $middleware['handle']();
+        if($handleMiddleware !== true) {
+            return;
+        };
+    }
+
     $controllerAndMethod = coreRouteHandleController($controller);
 
     require_once '../' . coreRouteGetNamespace() . '/' . $controllerAndMethod['controller'] . '.php';
@@ -308,4 +323,5 @@ function coreRouteDispatch($controller)
     $method = $controllerAndMethod['method'];
 
     echo $$method(...array_values(coreRouteGetParamsInUrl()));
+    return;
 }

@@ -1,5 +1,8 @@
 <?php
 
+$table = 'model';
+$from = 'model';
+
 $qWhere = ' WHERE ';
 
 $connection = function ()
@@ -10,7 +13,7 @@ $connection = function ()
         $mysql['host'],
         $mysql['username'],
         $mysql['password'],
-        $mysql['table']
+        $mysql['database']
     );
 
 
@@ -45,15 +48,15 @@ $execute = function ($query) use ($connection)
     return $results;
 };
 
-$get = function () use ($table, &$qWhere, $execute)
+$get = function () use ($from, &$qWhere, $execute)
 {
     $qWhere = substr(trim($qWhere), 0, -3);
-    $query = "SELECT * FROM `$table` $qWhere";
+    $query = "SELECT * FROM `$from` $qWhere";
 
     return $execute($query);
 };
 
-$insert = function ($params) use ($table, $execute)
+$insert = function ($params) use ($from, $execute)
 {
     $qKey = NULL;
     $qValue = '';
@@ -64,12 +67,12 @@ $insert = function ($params) use ($table, $execute)
     $qKey = substr(trim($qKey), 0, -1);
     $qValue = substr(trim($qValue), 0, -1);
 
-    $query = "INSERT INTO `$table` ($qKey) VALUES ($qValue)";
+    $query = "INSERT INTO `$from` ($qKey) VALUES ($qValue)";
 
     return $execute($query);
 };
 
-$update = function ($params) use ($table, &$qWhere, $execute)
+$update = function ($params) use ($from, &$qWhere, $execute)
 {
     $qSet = 'SET';
     foreach ($params as $key => $value) {
@@ -77,15 +80,15 @@ $update = function ($params) use ($table, &$qWhere, $execute)
     }
     $qSet = substr(trim($qSet), 0, -1);
     $qWhere = substr(trim($qWhere), 0, -3);
-    $query = "UPDATE `$table` $qSet $qWhere";
+    $query = "UPDATE `$from` $qSet $qWhere";
 
     return $execute($query);
 };
 
-$delete = function () use ($table, &$qWhere, $execute)
+$delete = function () use ($from, &$qWhere, $execute)
 {
     $qWhere = substr(trim($qWhere), 0, -3);
-    $query = "DELETE FROM `$table` $qWhere";
+    $query = "DELETE FROM `$from` $qWhere";
 
     return $execute($query);
 };
@@ -103,12 +106,21 @@ $where = function ($column, $operator, $value) use (&$qWhere, &$where, $get, $up
     ];
 };
 
+$setTable = function ($table) use ($from)
+{
+      $from = $table;
+};
 
-return compact(
+$getTable = function () use ($from)
+{
+    return $from;
+};
+
+return export('../vendor/hphp/framework/src/model.php', compact(
     'table',
     'get',
     'insert',
     'update',
     'delete',
     'where'
-);
+));
