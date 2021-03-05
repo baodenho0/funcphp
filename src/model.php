@@ -1,6 +1,5 @@
 <?php
 
-$table = 'model';
 $from = 'model';
 
 $qWhere = ' WHERE ';
@@ -26,6 +25,9 @@ $connection = function ()
 
 $execute = function ($query) use ($connection)
 {
+    $from = 'customers';
+    $query = str_replace('_from_', $from, $query);
+
     $results = [];
     $conn = $connection();
 
@@ -48,15 +50,23 @@ $execute = function ($query) use ($connection)
     return $results;
 };
 
-$get = function () use ($from, &$qWhere, $execute)
+$get = function () use (&$qWhere, $execute)
 {
-    $qWhere = substr(trim($qWhere), 0, -3);
-    $query = "SELECT * FROM `$from` $qWhere";
+    /**
+     * query without where
+     */
+    if(trim($qWhere) == 'WHERE') {
+        $qWhere = '';
+    } else {
+        $qWhere = substr(trim($qWhere), 0, -3);
+    }
+
+    $query = "SELECT * FROM `_from_`  $qWhere";
 
     return $execute($query);
 };
 
-$insert = function ($params) use ($from, $execute)
+$insert = function ($params) use ($execute)
 {
     $qKey = NULL;
     $qValue = '';
@@ -67,7 +77,7 @@ $insert = function ($params) use ($from, $execute)
     $qKey = substr(trim($qKey), 0, -1);
     $qValue = substr(trim($qValue), 0, -1);
 
-    $query = "INSERT INTO `$from` ($qKey) VALUES ($qValue)";
+    $query = "INSERT INTO `_from_` ($qKey) VALUES ($qValue)";
 
     return $execute($query);
 };
@@ -106,21 +116,15 @@ $where = function ($column, $operator, $value) use (&$qWhere, &$where, $get, $up
     ];
 };
 
-$setTable = function ($table) use ($from)
+$table = function ($setTable) use ($where, $get, $insert)
 {
-      $from = $table;
-};
-
-$getTable = function () use ($from)
-{
-    return $from;
+    return [
+        'where' => $where,
+        'get' => $get,
+        'insert' => $insert,
+    ];
 };
 
 return export('../vendor/hphp/framework/src/model.php', compact(
-    'table',
-    'get',
-    'insert',
-    'update',
-    'delete',
-    'where'
+    'table'
 ));
